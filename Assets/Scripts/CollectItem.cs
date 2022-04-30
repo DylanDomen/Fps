@@ -18,6 +18,7 @@ public class CollectItem : MonoBehaviour
 	public GameObject collectEffect;
 
 	public GameObject Player;
+	public bool makeHeartsSpawn = true;
 
 	// Use this for initialization
 	void Start()
@@ -28,6 +29,11 @@ public class CollectItem : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if (makeHeartsSpawn)
+		{
+			makeHeartsSpawn = false;
+			spawnHearts(3);
+		}
 
 		if (rotate)
 			transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.World);
@@ -55,5 +61,15 @@ public class CollectItem : MonoBehaviour
 			Player.GetComponent<PlayerInfo>().heal(1);
 		}
 		Destroy(gameObject);
+	}
+
+	void spawnHearts(int numberOfHearts)
+	{
+		for (int i = 0; i < numberOfHearts; i++)
+		{
+			Vector3 randomSpawnPosition = new Vector3(Random.Range(10, 20), 1, Random.Range(-11, -1));
+			Instantiate(this.gameObject, randomSpawnPosition, Quaternion.identity);
+			this.gameObject.GetComponent<MeshRenderer>().enabled = true;
+		}
 	}
 }
